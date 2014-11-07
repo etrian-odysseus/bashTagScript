@@ -1,0 +1,21 @@
+tell application "System Preferences"
+	activate
+end tell
+
+tell application "System Events"
+	tell process "System Preferences"
+		click menu item "Sharing" of menu "View" of menu bar 1
+		delay 2
+		tell window "Sharing"
+			click checkbox 1 of row 8 of table 1 of scroll area 1 of group 1
+			delay 1
+			if (exists sheet 1) then
+				if (exists button "Turn AirPort On" of sheet 1) then
+					click button "Turn AirPort On" of sheet 1
+					delay 1
+				end if
+				click button "Start" of sheet 1
+			end if
+		end tell
+	end tell
+end tell
