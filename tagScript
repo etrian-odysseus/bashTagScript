@@ -1,0 +1,27 @@
+#!/bin/sh
+
+exec 7<&0
+exec < ./macList
+loop=0
+while read mac; do
+     echo $mac
+     loop=$((loop+1))
+     ifconfig en1 ether $mac
+     ifconfig en1
+     #launchctl load -w /System/Library/LaunchDaemons/com.apple.InternetSharing.plist
+     osascript ./sharing.scpt
+     sleep 30
+     osascript ./sharing.scpt
+     #launchctl unload -w /System/Library/LaunchDaemons/com.apple.InternetSharing.plist
+     if [ $loop -eq 10  ]
+       then
+          line=$((line+10))
+          exec 5<&0
+          exec 0<&7 7<&-
+          echo "press enter to continue"
+          read cont
+          loop=0
+          exec 7<&0
+          exec 0<&5 5<&-
+     fi
+done
